@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>images/mobile/color-management.svg</file>
+        <file>images/mobile/document-open.svg</file>
+        <file>images/mobile/document-save.svg</file>
+        <file>images/mobile/edit-clear.svg</file>
+        <file>images/mobile/edit.svg</file>
+    </qresource>
+</RCC>

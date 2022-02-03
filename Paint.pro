@@ -1,4 +1,4 @@
-QT       += core gui printsupport
+QT       += core gui printsupport svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,6 +28,8 @@ CONFIG += embed_translations
 
 !unix: RC_ICONS += Paint.ico
 android: include(Qt-Color-Widgets/color_widgets.pri)
+android: RESOURCES += themes.qrc
+android: TRANSLATIONS += qtbase_de.qm
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,12 +1,11 @@
 #ifndef PAINT_H
 #define PAINT_H
 
+#include <scribblearea.h>
 #include <QList>
 #include <QSettings>
 #include <QMainWindow>
-#ifdef Q_OS_ANDROID
-#include <Qt-Color-Widgets/include/QtColorWidgets/color_2d_slider.hpp>
-#endif
+
 
 // ScribbleArea used to paint the image
 class ScribbleArea;
@@ -34,6 +33,7 @@ private slots:
     void saveAs();
     void penColor();
     void penWidth();
+    void choosePen(ScribbleArea::drawMode mode);
     void about();
     void retranslate();
     void loadSettings();
@@ -52,6 +52,7 @@ private:
     // Will tie user actions to functions
     void createActions();
     void createMenus();
+    void createToolbar();
 
     // Will check if changes have occurred since last save
     bool maybeSave();
@@ -79,12 +80,16 @@ private:
     QAction *exitAct;
     QAction *penColorAct;
     QAction *penWidthAct;
+    QAction *penAct;
     QAction *printAct;
     QAction *clearScreenAct;
     QAction *germanAct;
     QAction *englishAct;
     QAction *aboutAct;
     QAction *aboutQtAct;
+
+    // Toolbar
+    QToolBar *toolbar;
 };
 
 #endif

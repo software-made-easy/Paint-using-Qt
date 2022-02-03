@@ -7,6 +7,7 @@ int main(int argc, char *argv[])
 {
     // The main application
     QApplication app(argc, argv);
+    app.setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     // Create and open the main window
     MainWindow window;

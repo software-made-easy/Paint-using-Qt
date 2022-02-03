@@ -65,6 +65,33 @@ void ScribbleArea::setPenWidth(int newWidth)
     myPenWidth = newWidth;
 }
 
+// pen mode
+void ScribbleArea::setPenMode(drawMode newMode) {
+    if (newMode == Auto) {
+        qDebug("Auto mode");
+        if (mode == Normal) {
+            qDebug("[auto] call rubber");
+            setPenMode(Rubber);
+        }
+        else {
+            qDebug("[auto] call normal");
+            setPenMode(Normal);
+        }
+    }
+
+    if (newMode == Rubber && mode != Rubber) {
+        qDebug("Rubber mode");
+        tempColor = myPenColor;
+        myPenColor = backgroundColor;
+        mode = Rubber;
+    }
+    else if (newMode == Normal && mode != Normal) {
+        qDebug("Normal mode");
+        myPenColor = tempColor;
+        mode = Normal;
+    }
+}
+
 // Color the image area with white
 void ScribbleArea::clearImage()
 {
@@ -175,16 +202,21 @@ void ScribbleArea::resizeImage(QImage *image, const QSize &newSize)
 
 // print previer
 void ScribbleArea::preview() {
-    // Check for print dialog availability
-#if QT_CONFIG(printdialog)
+    // FIXME: Preview not working
+    QPrinter printer(QPrinter::HighResolution);
+    QPainter painter;
+    painter.begin(&printer);
+    QRect rect = painter.viewport();
+    QSize size = image.size();
+    size.scale(rect.size(), Qt::KeepAspectRatio);
+    painter.setViewport(rect.x(), rect.y(), size.width(), size.height());
+    painter.setWindow(image.rect());
+    painter.drawImage(0, 0, image);
+    painter.end();
 
     // Open preview dialog and print if asked
-    QPrintPreviewDialog dialog(this);
-
-    connect(&dialog, SIGNAL(paintRequested(QPrinter*)), this, SLOT(print(QPrinter*)));
+    QPrintPreviewDialog dialog(&printer,this);
     dialog.exec();
-
-#endif // QT_CONFIG(printdialog)
 }
 
 // Print the image

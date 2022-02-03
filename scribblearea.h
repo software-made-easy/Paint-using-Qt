@@ -16,18 +16,28 @@ class ScribbleArea : public QWidget
     Q_OBJECT
 
 public:
-    ScribbleArea(QWidget *parent = 0);
+    ScribbleArea(QWidget *parent = nullptr);
+
+    enum drawMode
+    {
+        Rubber,     ///< Erase drawed
+        Normal,     ///< Normal drawing
+        Auto,       ///< Automatic choose
+    };
 
     // Handles all events
     bool openImage(const QString &fileName);
     bool saveImage(const QString &fileName, const char *fileFormat);
     void setPenColor(const QColor &newColor);
     void setPenWidth(int newWidth);
+    void setPenMode(drawMode);
 
     // Has the image been modified since last save
     bool isModified() const { return modified; }
     QColor penColor() const { return myPenColor; }
     int penWidth() const { return myPenWidth; }
+    QColor backgroundColor = Qt::white;
+    drawMode mode = Normal;
 
 public slots:
 
@@ -51,7 +61,6 @@ protected:
 private:
     void drawLineTo(const QPoint &endPoint);
     void resizeImage(QImage *image, const QSize &newSize);
-    void _print(QPrinter *printer);
 
     // Will be marked true or false depending on if
     // we have saved after a change
@@ -64,12 +73,16 @@ private:
     // Holds the current pen width & color
     int myPenWidth;
     QColor myPenColor;
+    QColor tempColor = myPenColor;
 
     // Stores the image being drawn
     QImage image;
 
     // Stores the location at the current mouse event
     QPoint lastPoint;
+
+private slots:
+    void _print(QPrinter* printer);
 };
 
 #endif

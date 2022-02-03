@@ -1,5 +1,11 @@
 <RCC>
     <qresource prefix="/assets">
         <file>Paint.png</file>
+        <file>qtbase_de.qm</file>
+        <file>flags/german.png</file>
+        <file>flags/united_kingdom.png</file>
+        <file>images/pen-width.png</file>
+        <file>images/pen-width-dark.png.png</file>
+        <file>images/eraser.png</file>
     </qresource>
 </RCC>
