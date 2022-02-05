@@ -5,9 +5,7 @@ Paint is a simple tool for draw images.
 
 ### Windows
 
-*There are no current windows builds ready for download (mostly because I’m lazy). For now, you can build the project for windows yourself using the [Source](https://github.com/software-made-easy/Paint-using-Qt)*
-
-If you really, really want a windows build, please file a ticket on the project [github](https://github.com/software-made-easy/Paint-using-Qt) page.
+*Now avaiable in releases*
 
 ### Linux
 
