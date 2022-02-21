@@ -76,71 +76,71 @@
     <name>MainWindow</name>
     <message>
         <location filename="Paint.cpp" line="36"/>
-        <location filename="Paint.cpp" line="91"/>
-        <location filename="Paint.cpp" line="244"/>
-        <location filename="Paint.cpp" line="375"/>
-        <location filename="Paint.cpp" line="472"/>
+        <location filename="Paint.cpp" line="92"/>
+        <location filename="Paint.cpp" line="272"/>
+        <location filename="Paint.cpp" line="411"/>
+        <location filename="Paint.cpp" line="512"/>
         <source>Paint</source>
         <translation>Zeichnen</translation>
     </message>
     <message>
         <location filename="Paint.cpp" line="73"/>
-        <location filename="Paint.cpp" line="403"/>
+        <location filename="Paint.cpp" line="439"/>
         <source>&amp;File</source>
         <translation>&amp;Datei</translation>
     </message>
     <message>
         <location filename="Paint.cpp" line="74"/>
-        <location filename="Paint.cpp" line="282"/>
+        <location filename="Paint.cpp" line="310"/>
         <source>&amp;Open</source>
         <translation>Öffnen</translation>
     </message>
     <message>
         <location filename="Paint.cpp" line="75"/>
-        <location filename="Paint.cpp" line="291"/>
+        <location filename="Paint.cpp" line="319"/>
         <source>Save</source>
         <translation>Speichern</translation>
     </message>
     <message>
         <location filename="Paint.cpp" line="76"/>
-        <location filename="Paint.cpp" line="397"/>
+        <location filename="Paint.cpp" line="433"/>
         <source>&amp;Save As</source>
         <translation>&amp;Speichern als</translation>
     </message>
     <message>
         <location filename="Paint.cpp" line="77"/>
-        <location filename="Paint.cpp" line="312"/>
+        <location filename="Paint.cpp" line="340"/>
         <source>&amp;Print</source>
         <translation>Drucken</translation>
     </message>
     <message>
         <location filename="Paint.cpp" line="78"/>
-        <location filename="Paint.cpp" line="317"/>
+        <location filename="Paint.cpp" line="345"/>
         <source>Print Preview</source>
         <translation>Druckvorschau</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="83"/>
+        <location filename="Paint.cpp" line="84"/>
         <source>Use Rubber</source>
         <translation>Radiergummi verwenden</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="162"/>
+        <location filename="Paint.cpp" line="169"/>
         <source>Open File</source>
         <translation>Datei öffnen</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="245"/>
+        <location filename="Paint.cpp" line="273"/>
         <source>Select pen width:</source>
         <translation>Stiftbreite wählen:</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="274"/>
+        <location filename="Paint.cpp" line="302"/>
         <source>About Paint</source>
         <translation>Über Paint</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="275"/>
+        <location filename="Paint.cpp" line="303"/>
         <source>&lt;p&gt;&lt;b&gt;Paint&lt;/b&gt; is a simple tool for draw images.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;b&gt;Paint&lt;/b&gt; ist ein einfaches Werkzeug zum Zeichnen von Bildern.&lt;/p&gt;</translation>
     </message>
@@ -150,90 +150,90 @@
     </message>
     <message>
         <location filename="Paint.cpp" line="79"/>
-        <location filename="Paint.cpp" line="322"/>
+        <location filename="Paint.cpp" line="350"/>
         <source>E&amp;xit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="81"/>
-        <location filename="Paint.cpp" line="327"/>
+        <location filename="Paint.cpp" line="82"/>
+        <location filename="Paint.cpp" line="355"/>
         <source>&amp;Pen Color</source>
         <translation>Stiftfarbe</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="82"/>
-        <location filename="Paint.cpp" line="331"/>
+        <location filename="Paint.cpp" line="83"/>
+        <location filename="Paint.cpp" line="359"/>
         <source>Pen &amp;Width</source>
         <translation>Stiftbreite</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="84"/>
-        <location filename="Paint.cpp" line="340"/>
+        <location filename="Paint.cpp" line="85"/>
+        <location filename="Paint.cpp" line="372"/>
         <source>&amp;Clear Screen</source>
         <translation>Bildschirm löschen</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="341"/>
+        <location filename="Paint.cpp" line="373"/>
         <source>Ctrl+L</source>
         <translation>Strg+L</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="86"/>
-        <location filename="Paint.cpp" line="345"/>
+        <location filename="Paint.cpp" line="87"/>
+        <location filename="Paint.cpp" line="377"/>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="87"/>
-        <location filename="Paint.cpp" line="348"/>
+        <location filename="Paint.cpp" line="88"/>
+        <location filename="Paint.cpp" line="380"/>
         <source>English</source>
         <translation>Englisch</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="89"/>
-        <location filename="Paint.cpp" line="352"/>
+        <location filename="Paint.cpp" line="90"/>
+        <location filename="Paint.cpp" line="384"/>
         <source>&amp;About</source>
         <translation>&amp;Über</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="90"/>
-        <location filename="Paint.cpp" line="356"/>
+        <location filename="Paint.cpp" line="91"/>
+        <location filename="Paint.cpp" line="388"/>
         <source>About &amp;Qt</source>
         <translation>Über &amp;Qt</translation>
     </message>
     <message>
         <location filename="Paint.cpp" line="80"/>
-        <location filename="Paint.cpp" line="413"/>
+        <location filename="Paint.cpp" line="449"/>
         <source>&amp;Options</source>
         <translation>&amp;Optionen</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="85"/>
-        <location filename="Paint.cpp" line="422"/>
+        <location filename="Paint.cpp" line="86"/>
+        <location filename="Paint.cpp" line="462"/>
         <source>Language</source>
         <translation>Sprache</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="88"/>
-        <location filename="Paint.cpp" line="429"/>
+        <location filename="Paint.cpp" line="89"/>
+        <location filename="Paint.cpp" line="469"/>
         <source>&amp;Help</source>
         <translation>&amp;Hilfe</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="376"/>
-        <location filename="Paint.cpp" line="473"/>
+        <location filename="Paint.cpp" line="412"/>
+        <location filename="Paint.cpp" line="513"/>
         <source>The image has been modified.
 Do you want to save your changes?</source>
         <translation>Das Bild wurde geändert.
 Möchtest du deine Änderungen speichern?</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="497"/>
+        <location filename="Paint.cpp" line="537"/>
         <source>Save As</source>
         <translation>Speichern unter</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="499"/>
+        <location filename="Paint.cpp" line="539"/>
         <source>%1 Files (*.%2);;All Files (*)</source>
         <translation>%1 Dateien (*.%2);;Alle Dateien (*)</translation>
     </message>
@@ -241,22 +241,28 @@ Möchtest du deine Änderungen speichern?</translation>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="Paint.cpp" line="157"/>
+        <location filename="Paint.cpp" line="81"/>
+        <location filename="Paint.cpp" line="368"/>
+        <source>Change background color</source>
+        <translation>Hintergrundfarbe ändern</translation>
+    </message>
+    <message>
+        <location filename="Paint.cpp" line="164"/>
         <source>Images</source>
         <translation>Bilder</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="184"/>
+        <location filename="Paint.cpp" line="191"/>
         <source>Select format</source>
         <translation>Format auswählen</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="184"/>
+        <location filename="Paint.cpp" line="191"/>
         <source>Select image format</source>
         <translation>Bildformat auswählen</translation>
     </message>
     <message>
-        <location filename="Paint.cpp" line="335"/>
+        <location filename="Paint.cpp" line="363"/>
         <source>Use Rubber</source>
         <translation>Radiergummi verwenden</translation>
     </message>
@@ -282,7 +288,7 @@ Möchtest du deine Änderungen speichern?</translation>
     <message>
         <location filename="Qt-Color-Widgets/src/QtColorWidgets/color_palette_model.cpp" line="70"/>
         <source>Unnamed</source>
-        <translation></translation>
+        <translation>Unbenannt</translation>
     </message>
     <message>
         <location filename="Qt-Color-Widgets/src/QtColorWidgets/color_palette_model.cpp" line="144"/>

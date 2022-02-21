@@ -2,10 +2,11 @@
     <qresource prefix="/assets">
         <file>Paint.png</file>
         <file>qtbase_de.qm</file>
-        <file>flags/german.png</file>
-        <file>flags/united_kingdom.png</file>
+        <file>flags/german.svg</file>
+        <file>flags/united_kingdom.svg</file>
         <file>images/pen-width.png</file>
         <file>images/pen-width-dark.png.png</file>
         <file>images/eraser.png</file>
+        <file>images/background-color.png</file>
     </qresource>
 </RCC>

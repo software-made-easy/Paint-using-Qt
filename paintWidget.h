@@ -1,5 +1,5 @@
-#ifndef SCRIBBLEAREA_H
-#define SCRIBBLEAREA_H
+#ifndef PAINTWIDGET_H
+#define PAINTWIDGET_H
 
 #include <QColor>
 #include <QImage>
@@ -8,7 +8,7 @@
 #include <QtPrintSupport/QPrinter>
 
 
-class ScribbleArea : public QWidget
+class paintWidget : public QWidget
 {
     // Declares our class as a QObject which is the base class
     // for all Qt objects
@@ -16,7 +16,7 @@ class ScribbleArea : public QWidget
     Q_OBJECT
 
 public:
-    ScribbleArea(QWidget *parent = nullptr);
+    paintWidget(QWidget *parent = nullptr);
 
     enum drawMode
     {
@@ -47,7 +47,13 @@ public slots:
     void print();
     void preview();
 
+signals:
+    void updateStatusBar();
+
 protected:
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -87,4 +93,4 @@ private slots:
     void printPreview(QPrinter *printer);
 };
 
-#endif
+#endif // PAINTWIDGET_H

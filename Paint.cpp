@@ -9,7 +9,15 @@
 #endif
 
 #include "Paint.h"
-#include "scribblearea.h"
+#include "paintWidget.h"
+
+
+#if defined(Q_OS_BLACKBERRY) || defined(Q_OS_ANDROID) || defined(Q_OS_IOS) || defined(Q_OS_WP)
+#define Q_OS_MOBILE
+#else
+#define Q_OS_DESKTOP
+#endif
+
 
 QTranslator translator, qtTranslator;
 QString translationsPath = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
@@ -24,13 +32,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Create the ScribbleArea widget and make it
     // the cenQApplication::tral widget
-    scribbleArea = new ScribbleArea(this);
+    scribbleArea = new paintWidget(this);
     setCentralWidget(scribbleArea);
 
     // Create actions and menus
     createActions();
     createMenus();
     createToolbar();
+#if defined(QT_DEBUG) && !defined(Q_OS_MOBILE)
+    createStatusBar();
+
+    // update status bar
+    connect(scribbleArea, &paintWidget::updateStatusBar, this, &MainWindow::updateStatusbar);
+#endif
 
     // Set the title
     qApp->setApplicationDisplayName(QApplication::translate("MainWindow", "Paint"));
@@ -78,6 +92,7 @@ void MainWindow::retranslate() {
     previewAct->setText(QApplication::translate("MainWindow", "Print Preview"));
     exitAct->setText(QApplication::translate("MainWindow", "E&xit"));
     optionMenu->setTitle(QApplication::translate("MainWindow", "&Options"));
+    backColAct->setText(QApplication::tr("Change background color"));
     penColorAct->setText(QApplication::translate("MainWindow", "&Pen Color"));
     penWidthAct->setText(QApplication::translate("MainWindow", "Pen &Width"));
     penAct->setText(QApplication::translate("MainWindow", "Use Rubber"));
@@ -96,15 +111,9 @@ void MainWindow::language(QString language) {
         if (translator.load(QString(":/i18n/Paint_%1").arg(language))) {
             qApp->installTranslator(&translator);
         }
-#ifndef Q_OS_ANDROID
-        if (qtTranslator.load(translationsPath + "/qtbase_" + language)) {
+        if (qtTranslator.load(":/assets/qtbase_" + language)) {
             qApp->installTranslator(&qtTranslator);
         }
-#else
-        if (qtTranslator.load(":/i18n/qtbase_" + language)) {
-            qApp->installTranslator(&qtTranslator);
-        }
-#endif
         currLang = language;
     }
     else {
@@ -215,6 +224,27 @@ void MainWindow::saveAs()
     saveFile(fileFormat);
 }
 
+// Opens a dialog to change background(color)
+void MainWindow::backgroundColor() {
+    // Store the chosen color from the dialog
+    QColor newColor;
+
+#ifdef Q_OS_ANDROID
+    color_widgets::ColorDialog dialog(this);
+    dialog.setColor(scribbleArea->penColor());
+    dialog.setButtonMode(color_widgets::ColorDialog::OkCancel);
+    connect(&dialog, QOverload<QColor>::of(&color_widgets::ColorDialog::colorSelected), this,
+            [&newColor](QColor color){newColor = color;});
+    dialog.exec();
+#else
+    newColor = QColorDialog::getColor(scribbleArea->backgroundColor, this);
+#endif
+
+    // If color is valid, set it
+    if (newColor.isValid())
+        scribbleArea->setBackgroundColor(newColor);
+}
+
 // Opens a dialog to change the pen color
 void MainWindow::penColor()
 {
@@ -258,14 +288,14 @@ void MainWindow::penWidth()
 }
 
 // Pen mode
-void MainWindow::choosePen(ScribbleArea::drawMode mode) {
+void MainWindow::choosePen(paintWidget::drawMode mode) {
     scribbleArea->setPenMode(mode);
 
-    if (mode == ScribbleArea::Auto) {
+    if (mode == paintWidget::Auto) {
         mode = scribbleArea->mode;
     }
 
-    if (mode == ScribbleArea::Normal) {
+    if (mode == paintWidget::Normal) {
         penAct->setChecked(false);
     }
     else {
@@ -340,7 +370,11 @@ void MainWindow::createActions()
     // create action to choose between pen and rubber
     penAct = new QAction(QIcon::fromTheme(":/assets/images/eraser.png"), QApplication::tr("Use Rubber"), this);
     penAct->setCheckable(true);
-    connect(penAct, &QAction::triggered, this, [this](){choosePen(ScribbleArea::Auto); });
+    connect(penAct, &QAction::triggered, this, [this](){choosePen(paintWidget::Auto); });
+
+    // create choose background color action
+    backColAct = new QAction(QIcon(":/assets/images/background-color.png"), QApplication::tr("Change background color"), this);
+    connect(backColAct, &QAction::triggered, this, &MainWindow::backgroundColor);
 
     // Create clear screen action and tie to MainWindow::clearImage()
     clearScreenAct = new QAction(QIcon::fromTheme("edit-clear"), QApplication::translate("MainWindow", "&Clear Screen"), this);
@@ -348,10 +382,10 @@ void MainWindow::createActions()
     connect(clearScreenAct, &QAction::triggered, this, &MainWindow::clear);
 
     // Create language actions
-    germanAct = new QAction(QIcon(":/assets/flags/german.png"), QApplication::translate("MainWindow", "German"), this);
+    germanAct = new QAction(QIcon(":/assets/flags/german.svg"), QApplication::translate("MainWindow", "German"), this);
     connect(germanAct, &QAction::triggered, this, [this]{ language("de"); });
 
-    englishAct = new QAction(QIcon(":/assets/flags/united_kingdom.png"),QApplication::translate("MainWindow", "English"), this);
+    englishAct = new QAction(QIcon(":/assets/flags/united_kingdom.svg"),QApplication::translate("MainWindow", "English"), this);
     connect(englishAct, &QAction::triggered, this, [this]{ language("en"); });
 
     // Create about action and tie to MainWindow::about()
@@ -362,12 +396,17 @@ void MainWindow::createActions()
     aboutQtAct = new QAction(QIcon::fromTheme("info-about"), QApplication::translate("MainWindow", "About &Qt"), this);
     connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-#ifdef Q_OS_ANDROID
+    // not for linux, because it has standart icons
+#if !(defined (LINUX) || defined (__linux__)) || defined (ANDROID)
     openAct->setIcon(QIcon(":/icons/images/mobile/document-open.svg"));
     saveAct->setIcon(QIcon(":/icons/images/mobile/document-save.svg"));
+    printAct->setIcon(QIcon(":/icons/images/mobile/document-print.svg"));
+    previewAct->setIcon(QIcon(":/icons/images/mobile/document-print-preview.svg"));
+    exitAct->setIcon(QIcon(":/icons/images/mobile/application-exit.svg"));
     penColorAct->setIcon(QIcon(":/icons/images/mobile/color-management.svg"));
     clearScreenAct->setIcon(QIcon(":/icons/images/mobile/edit-clear.svg"));
     penWidthAct->setIcon(QIcon(":/assets/images/pen-width-dark.png.png"));
+    aboutQtAct->setIcon(QIcon(":/icons/images/mobile/help-about.svg"));
 #endif
 }
 
@@ -422,6 +461,10 @@ void MainWindow::createMenus()
     optionMenu->addSeparator();
     optionMenu->addAction(penAct);
     optionMenu->addSeparator();
+#ifdef QT_DEBUG
+    optionMenu->addAction(backColAct);
+    optionMenu->addSeparator();
+#endif
     optionMenu->addAction(clearScreenAct);
 
     // create language menu
@@ -446,7 +489,7 @@ void MainWindow::createToolbar() {
     toolbar = new QToolBar(this);
     toolbar->setObjectName("toolbar");
 
-#ifdef Q_OS_ANDROID
+#ifdef Q_OS_MOBILE
     toolbar->setIconSize(QSize(128, 128));
     toolbar->setAllowedAreas(Qt::TopToolBarArea);
     toolbar->setMovable(false);
@@ -457,7 +500,7 @@ void MainWindow::createToolbar() {
     addToolBar(toolbar);
     toolbar->addAction(openAct);
     toolbar->addAction(saveAct);
-#ifndef Q_OS_ANDROID
+#ifdef Q_OS_DESKTOP
     toolbar->addAction(printAct);
     toolbar->addAction(previewAct);
 #endif
@@ -465,6 +508,19 @@ void MainWindow::createToolbar() {
     toolbar->addAction(penWidthAct);
     toolbar->addAction(penAct);
     toolbar->addAction(clearScreenAct);
+}
+
+void MainWindow::createStatusBar() {
+    setStatusBar(statusBar());
+    sizeLabel = new QLabel(this);
+    sizeLabel->setAlignment(Qt::AlignCenter);
+    sizeLabel->setStyleSheet("border: none");
+    statusBar()->addPermanentWidget(sizeLabel, 1);
+}
+
+void MainWindow::updateStatusbar() {
+    sizeLabel->setText(QString("%1X%2").arg(QString::number(scribbleArea->height()),
+                                            QString::number(scribbleArea->width())));
 }
 
 bool MainWindow::maybeSave()

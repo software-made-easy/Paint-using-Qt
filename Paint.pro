@@ -11,11 +11,13 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     Paint.cpp \
-    scribblearea.cpp
+    paintWidget.cpp \
+    # textedit.cpp
 
 HEADERS += \
     Paint.h \
-    scribblearea.h
+    paintWidget.h \
+    # textedit.h
 
 TRANSLATIONS += \
     Paint_de.ts
@@ -26,10 +28,19 @@ RESOURCES += \
 CONFIG += lrelease
 CONFIG += embed_translations
 
-!unix: RC_ICONS += Paint.ico
 android: include(Qt-Color-Widgets/color_widgets.pri)
-android: RESOURCES += themes.qrc
-android: TRANSLATIONS += qtbase_de.qm
+!unix || android {
+    RESOURCES += themes.qrc
+    RC_ICONS = Paint.ico
+    ICON = Paint.icns
+}
+
+
+VERSION = 0.6.5
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+QMAKE_TARGET_COMPANY = "Software-made-easy"
+QMAKE_TARGET_PRODUCT="Paint"
+QMAKE_TARGET_DESCRIPTION="Paint is a simple tool for draw images."
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

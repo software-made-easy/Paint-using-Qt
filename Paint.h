@@ -1,10 +1,11 @@
 #ifndef PAINT_H
 #define PAINT_H
 
-#include <scribblearea.h>
+#include <paintWidget.h>
 #include <QList>
 #include <QSettings>
 #include <QMainWindow>
+#include <QLabel>
 
 
 // ScribbleArea used to paint the image
@@ -31,14 +32,16 @@ private slots:
     void open();
     void save();
     void saveAs();
+    void backgroundColor();
     void penColor();
     void penWidth();
-    void choosePen(ScribbleArea::drawMode mode);
+    void choosePen(paintWidget::drawMode mode);
     void about();
     void retranslate();
     void loadSettings();
     void saveSettings();
     void restoreDefault();
+    void updateStatusbar();
 
 private:
     // settings
@@ -53,6 +56,7 @@ private:
     void createActions();
     void createMenus();
     void createToolbar();
+    void createStatusBar();
 
     // Will check if changes have occurred since last save
     bool maybeSave();
@@ -61,7 +65,7 @@ private:
     bool saveFile(const QByteArray &fileFormat);
 
     // What we'll draw on
-    ScribbleArea *scribbleArea;
+    paintWidget *scribbleArea;
 
     // The menu widgets
     QMenu *saveAsMenu;
@@ -78,6 +82,7 @@ private:
     QList<QAction *> saveAsActs;
     QAction *previewAct;
     QAction *exitAct;
+    QAction *backColAct;
     QAction *penColorAct;
     QAction *penWidthAct;
     QAction *penAct;
@@ -90,6 +95,9 @@ private:
 
     // Toolbar
     QToolBar *toolbar;
+
+    // STatusbar
+    QLabel *sizeLabel;
 };
 
 #endif

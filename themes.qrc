@@ -5,5 +5,9 @@
         <file>images/mobile/document-save.svg</file>
         <file>images/mobile/edit-clear.svg</file>
         <file>images/mobile/edit.svg</file>
+        <file>images/mobile/document-print.svg</file>
+        <file>images/mobile/document-print-preview.svg</file>
+        <file>images/mobile/application-exit.svg</file>
+        <file>images/mobile/help-about.svg</file>
     </qresource>
 </RCC>

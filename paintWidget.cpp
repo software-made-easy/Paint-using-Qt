@@ -1,17 +1,22 @@
 #include <QtWidgets>
+#include <QStandardPaths>
 
 #include <QtPrintSupport/qtprintsupportglobal.h>
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrintDialog>
 #include <QtPrintSupport/QPrintPreviewDialog>
 
-#include "scribblearea.h"
+#include "paintWidget.h"
 
-ScribbleArea::ScribbleArea(QWidget *parent)
+
+paintWidget::paintWidget(QWidget *parent)
     : QWidget(parent)
 {
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
+
+    // accept drag and drop
+    setAcceptDrops(true);
 
     // Set defaults for the monitored variables
     modified = false;
@@ -21,7 +26,7 @@ ScribbleArea::ScribbleArea(QWidget *parent)
 }
 
 // Used to load the image and place it in the widget
-bool ScribbleArea::openImage(const QString &fileName)
+bool paintWidget::openImage(const QString &fileName)
 {
     // Holds the image
     QImage loadedImage;
@@ -39,7 +44,7 @@ bool ScribbleArea::openImage(const QString &fileName)
 }
 
 // Save the current image
-bool ScribbleArea::saveImage(const QString &fileName, const char *fileFormat)
+bool paintWidget::saveImage(const QString &fileName, const char *fileFormat)
 {
     // Created to hold the image
     QImage visibleImage = image;
@@ -54,7 +59,7 @@ bool ScribbleArea::saveImage(const QString &fileName, const char *fileFormat)
 }
 
 // used to change background color
-void ScribbleArea::setBackgroundColor(const QColor &color) {
+void paintWidget::setBackgroundColor(const QColor &color) {
     // FIXME: Not workking
     /*QImage newImage(image.size(), QImage::Format_RGB32);
     newImage.fill(color);
@@ -71,19 +76,19 @@ void ScribbleArea::setBackgroundColor(const QColor &color) {
 }
 
 // Used to change the pen color
-void ScribbleArea::setPenColor(const QColor &newColor)
+void paintWidget::setPenColor(const QColor &newColor)
 {
     myPenColor = newColor;
 }
 
 // Used to change the pen width
-void ScribbleArea::setPenWidth(int newWidth)
+void paintWidget::setPenWidth(int newWidth)
 {
     myPenWidth = newWidth;
 }
 
 // pen mode
-void ScribbleArea::setPenMode(drawMode newMode) {
+void paintWidget::setPenMode(drawMode newMode) {
     if (newMode == Auto) {
         if (mode == Normal) {
             setPenMode(Rubber);
@@ -105,7 +110,7 @@ void ScribbleArea::setPenMode(drawMode newMode) {
 }
 
 // Color the image area with white
-void ScribbleArea::clearImage()
+void paintWidget::clearImage()
 {
     image.fill(qRgb(255, 255, 255));
     modified = true;
@@ -115,7 +120,7 @@ void ScribbleArea::clearImage()
 // If a mouse button is pressed check if it was the
 // left button and if so store the current position
 // Set that we are currently drawing
-void ScribbleArea::mousePressEvent(QMouseEvent *event)
+void paintWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         lastPoint = event->pos();
@@ -126,14 +131,14 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 // When the mouse moves if the left button is clicked
 // we call the drawline function which draws a line
 // from the last position to the current
-void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
+void paintWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if ((event->buttons() & Qt::LeftButton) && scribbling)
         drawLineTo(event->pos());
 }
 
 // If the button is released we set variables to stop drawing
-void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
+void paintWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && scribbling) {
         drawLineTo(event->pos());
@@ -144,7 +149,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 // QPainter provides functions to draw on the widget
 // The QPaintEvent is sent to widgets that need to
 // update themselves
-void ScribbleArea::paintEvent(QPaintEvent *event)
+void paintWidget::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
 
@@ -158,7 +163,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
 
 // Resize the image to slightly larger then the main window
 // to cut down on the need to resize the image
-void ScribbleArea::resizeEvent(QResizeEvent *event)
+void paintWidget::resizeEvent(QResizeEvent *event)
 {
     if (width() > image.width() || height() > image.height()) {
         int newWidth = qMax(width() + 128, image.width());
@@ -167,9 +172,22 @@ void ScribbleArea::resizeEvent(QResizeEvent *event)
         update();
     }
     QWidget::resizeEvent(event);
+    emit updateStatusBar();
 }
 
-void ScribbleArea::drawLineTo(const QPoint &endPoint)
+void paintWidget::dragEnterEvent(QDragEnterEvent *event) {
+    QWidget::dragEnterEvent(event);
+}
+
+void paintWidget::dragMoveEvent(QDragMoveEvent *event) {
+    QWidget::dragMoveEvent(event);
+}
+
+void paintWidget::dropEvent(QDropEvent *event) {
+    QWidget::dropEvent(event);
+}
+
+void paintWidget::drawLineTo(const QPoint &endPoint)
 {
     // Used to draw on the widget
     QPainter painter(&image);
@@ -196,7 +214,7 @@ void ScribbleArea::drawLineTo(const QPoint &endPoint)
 
 // When the app is resized create a new image using
 // the changes made to the image
-void ScribbleArea::resizeImage(QImage *image, const QSize &newSize)
+void paintWidget::resizeImage(QImage *image, const QSize &newSize)
 {
     // Check if we need to redraw the image
     if (image->size() == newSize)
@@ -213,16 +231,16 @@ void ScribbleArea::resizeImage(QImage *image, const QSize &newSize)
 }
 
 // print preview
-void ScribbleArea::preview() {
+void paintWidget::preview() {
     QPrinter printer(QPrinter::HighResolution);
     // Open preview dialog and print if asked
     QPrintPreviewDialog dialog(&printer, this);
-    connect(&dialog, &QPrintPreviewDialog::paintRequested, this, &ScribbleArea::printPreview);
+    connect(&dialog, &QPrintPreviewDialog::paintRequested, this, &paintWidget::printPreview);
     dialog.exec();
 }
 
 // Print the image
-void ScribbleArea::_print(QPrinter *printer)
+void paintWidget::_print(QPrinter *printer)
 {
     // Open printer dialog and print if asked
     QPrintDialog printDialog(printer, this);
@@ -238,20 +256,19 @@ void ScribbleArea::_print(QPrinter *printer)
 }
 
 // create printer
-void ScribbleArea::print() {
+void paintWidget::print() {
     QPrinter printer(QPrinter::HighResolution);
     _print(&printer);
 }
 
-void ScribbleArea::printPreview(QPrinter *printer)
+void paintWidget::printPreview(QPrinter *printer)
 {
-    QPainter painter;
-    painter.begin(printer);
+    QPainter painter(printer);
     QRect rect = painter.viewport();
-    QSize size = image.size();
+    QSize size = this->size();
     size.scale(rect.size(), Qt::KeepAspectRatio);
     painter.setViewport(rect.x(), rect.y(), size.width(), size.height());
-    painter.setWindow(image.rect());
+    painter.setWindow(this->rect());
     painter.drawImage(0, 0, image);
-    painter.end();
+    render(&painter);
 }
