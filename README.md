@@ -1,3 +1,5 @@
+# Paint is deprecated, use [Paint++](https://github.com/software-made-easy/Paintpp) instead
+
 # Paint-using-Qt
 Paint is a simple tool for draw images.
 
